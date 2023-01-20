@@ -56,6 +56,11 @@ void TIMER0_vidInit(u16 u16LoadVal, u16 u16PrescaleVal)
 	
 }
 
+void TIMER0_vidDisableTimer(void)
+{
+	TIM0_CTL=0;
+}
+
 void TIMER0_vidPutISRFunction(void (*ptrF) (void))
 {
 	ptrFCallback = ptrF;

@@ -259,3 +259,225 @@ void SYSCNTRL_vidChangeSysClock(u8 u8SysClock)
 	// 7. Set BYPASS (Bit 11) to 0, select PLL as the source of system clock
 	CLEAR_BIT(SYSCTL->RCC2,11);
 }
+
+void SYSCNTRL_vidResetGPIO(u8 u8GPIOPeriph)
+{
+	switch(u8GPIOPeriph)
+	{
+		case SYSCNTRL_GPIO_PORTA:
+			SET_BIT(SYSCTL->SRGPIO,0);
+			CLEAR_BIT(SYSCTL->SRGPIO,0);
+			break;
+		case SYSCNTRL_GPIO_PORTB:
+			SET_BIT(SYSCTL->SRGPIO,1);
+			CLEAR_BIT(SYSCTL->SRGPIO,1);
+			break;
+		case SYSCNTRL_GPIO_PORTC:
+			SET_BIT(SYSCTL->SRGPIO,2);
+			CLEAR_BIT(SYSCTL->SRGPIO,2);
+			break;
+		case SYSCNTRL_GPIO_PORTD:
+			SET_BIT(SYSCTL->SRGPIO,3);
+			CLEAR_BIT(SYSCTL->SRGPIO,3);
+			break;
+		case SYSCNTRL_GPIO_PORTE:
+			SET_BIT(SYSCTL->SRGPIO,4);
+			CLEAR_BIT(SYSCTL->SRGPIO,4);
+			break;
+		case SYSCNTRL_GPIO_PORTF:
+			SET_BIT(SYSCTL->SRGPIO,5);
+			CLEAR_BIT(SYSCTL->SRGPIO,5);
+			break;
+	}
+}
+
+void SYSCNTRL_vidResetUART(u8 u8UARTPeriph)
+{
+	switch(u8UARTPeriph)
+	{
+		case SYSCNTRL_UART0:
+			SET_BIT(SYSCTL->SRUART,0);
+			CLEAR_BIT(SYSCTL->SRUART,0);
+			break;
+		case SYSCNTRL_UART1:
+			SET_BIT(SYSCTL->SRUART,1);
+			CLEAR_BIT(SYSCTL->SRUART,1);
+			break;
+		case SYSCNTRL_UART2:
+			SET_BIT(SYSCTL->SRUART,2);
+			CLEAR_BIT(SYSCTL->SRUART,2);
+			break;
+		case SYSCNTRL_UART3:
+			SET_BIT(SYSCTL->SRUART,3);
+			CLEAR_BIT(SYSCTL->SRUART,3);
+			break;
+		case SYSCNTRL_UART4:
+			SET_BIT(SYSCTL->SRUART,4);
+			CLEAR_BIT(SYSCTL->SRUART,4);
+			break;
+		case SYSCNTRL_UART5:
+			SET_BIT(SYSCTL->SRUART,5);
+			CLEAR_BIT(SYSCTL->SRUART,5);
+			break;
+		case SYSCNTRL_UART6:
+			SET_BIT(SYSCTL->SRUART,6);
+			CLEAR_BIT(SYSCTL->SRUART,6);
+			break;
+		case SYSCNTRL_UART7:
+			SET_BIT(SYSCTL->SRUART,7);
+			CLEAR_BIT(SYSCTL->SRUART,7);
+			break;
+	}
+}
+
+void SYSCNTRL_vidResetTimer(u8 u8TimerModule)
+{
+	switch(u8TimerModule)
+	{
+		case SYSCNTRL_TIMER_0:
+			SET_BIT(SYSCTL->SRTIMER,0);
+			CLEAR_BIT(SYSCTL->SRTIMER,0);
+			break;
+		case SYSCNTRL_TIMER_1:
+			SET_BIT(SYSCTL->SRTIMER,1);
+			CLEAR_BIT(SYSCTL->SRTIMER,1);
+			break;
+		case SYSCNTRL_TIMER_2:
+			SET_BIT(SYSCTL->SRTIMER,2);
+			CLEAR_BIT(SYSCTL->SRTIMER,2);
+			break;
+		case SYSCNTRL_TIMER_3:
+			SET_BIT(SYSCTL->SRTIMER,3);
+			CLEAR_BIT(SYSCTL->SRTIMER,3);
+			break;
+		case SYSCNTRL_TIMER_4:
+			SET_BIT(SYSCTL->SRTIMER,4);
+			CLEAR_BIT(SYSCTL->SRTIMER,4);
+			break;
+		case SYSCNTRL_TIMER_5:
+			SET_BIT(SYSCTL->SRTIMER,5);
+			CLEAR_BIT(SYSCTL->SRTIMER,5);
+			break;
+	}
+
+}
+
+SYSCNTRL_PERIPH_t SYSCNTRL_u8CheckGPIOPeriphReady(u8 u8GPIOPeriph)
+{
+	u8 u8PeriphState = 0;
+	/*return_val to be sent as return of this function*/
+	SYSCNTRL_PERIPH_t ret_val;
+	
+	switch(u8GPIOPeriph)
+	{
+		case SYSCNTRL_GPIO_PORTA:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,0);
+		break;
+		case SYSCNTRL_GPIO_PORTB:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,1);
+		break;
+		case SYSCNTRL_GPIO_PORTC:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,2);
+		break;
+		case SYSCNTRL_GPIO_PORTD:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,3);
+		break;
+		case SYSCNTRL_GPIO_PORTE:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,4);
+		break;
+		case SYSCNTRL_GPIO_PORTF:
+			u8PeriphState = GET_BIT(SYSCTL->PRGPIO,5);
+		break;
+	}
+	
+	if (u8PeriphState == 0)
+	{
+		ret_val = SYSCNTRL_PERIPH_NOTREADY;
+	}
+	else
+	{
+		ret_val = SYSCNTRL_PERIPH_READY;
+	}
+	
+	return ret_val;
+}
+
+SYSCNTRL_PERIPH_t SYSCNTRL_u8CheckUARTPeriphReady(u8 u8UARTPeriph)
+{
+u8 u8PeriphState = 0;
+	/*return_val to be sent as return of this function*/
+	SYSCNTRL_PERIPH_t ret_val;
+	
+	switch(u8UARTPeriph)
+	{
+		case SYSCNTRL_UART0:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,0);
+		break;
+		case SYSCNTRL_UART1:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,1);
+		break;
+		case SYSCNTRL_UART2:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,2);
+		break;
+		case SYSCNTRL_UART3:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,3);
+		break;
+		case SYSCNTRL_UART4:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,4);
+		break;
+		case SYSCNTRL_UART5:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,5);
+		break;
+		case SYSCNTRL_UART6:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,6);
+			break;
+		case SYSCNTRL_UART7:
+			u8PeriphState = GET_BIT(SYSCTL->PRUART,7);
+			break;
+	}
+	
+	if (u8PeriphState == 0)
+	{
+		ret_val = SYSCNTRL_PERIPH_NOTREADY;
+	}
+	else
+	{
+		ret_val = SYSCNTRL_PERIPH_READY;
+	}
+	
+	return ret_val;
+}
+
+SYSCNTRL_PERIPH_t SYSCNTRL_u8CheckSPIPeriphReady(u8 u8SPIPeriph)
+{
+	u8 u8PeriphState = 0;
+	SYSCNTRL_PERIPH_t ret_val = SYSCNTRL_PERIPH_NOTREADY;
+	
+	switch(u8SPIPeriph)
+	{
+		case SYSCNTRL_SPI0:
+			u8PeriphState =	GET_BIT(SYSCTL->PRSSI,0);
+		break;
+		case SYSCNTRL_SPI1:
+			u8PeriphState = GET_BIT(SYSCTL->PRSSI,1);
+		break;
+		case SYSCNTRL_SPI2:
+			u8PeriphState = GET_BIT(SYSCTL->PRSSI,2);
+		break;
+		case SYSCNTRL_SPI3:
+			u8PeriphState = GET_BIT(SYSCTL->PRSSI,3);
+		break;
+		
+	}
+	
+	if (u8PeriphState == 0)
+	{
+		ret_val = SYSCNTRL_PERIPH_NOTREADY;
+	}
+	else
+	{
+		ret_val = SYSCNTRL_PERIPH_READY;
+	}
+	
+	return ret_val;
+}
